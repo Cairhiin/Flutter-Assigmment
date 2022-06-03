@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Calculator',
       home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 37, 22, 25),
+        backgroundColor: const Color.fromARGB(255, 198, 172, 143),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 127, 50, 70),
           title: const Center(
@@ -48,7 +48,9 @@ class _CalculatorState extends State<Calculator> {
       children: [
         Expanded(
           child: Container(
+            margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(15),
+            color: const Color.fromARGB(255, 10, 9, 8),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -59,7 +61,7 @@ class _CalculatorState extends State<Calculator> {
                               value1,
                               style: const TextStyle(
                                 fontSize: 15,
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 234, 224, 213),
                               )
                             ),
                             const SizedBox(width: 20),
@@ -67,7 +69,7 @@ class _CalculatorState extends State<Calculator> {
                               operator,
                               style: const TextStyle(
                                 fontSize: 15,
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 234, 224, 213),
                               )
                             ),
                             const SizedBox(width: 20),
@@ -75,20 +77,19 @@ class _CalculatorState extends State<Calculator> {
                               value2,
                               style: const TextStyle(
                                 fontSize: 15,
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 234, 224, 213),
                               )
                             )
                         ],
                       ),
                   Container(
-                    color: Colors.black12, 
                     padding: const EdgeInsets.all(25),
                     alignment: Alignment.centerRight,
                     child: Text(
                       result,
                       style: const TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
+                          fontSize: 38,
+                          color: Color.fromARGB(255, 234, 224, 213),
                           fontWeight: FontWeight.bold),
                     ),
                   )
@@ -156,9 +157,9 @@ class _CalculatorState extends State<Calculator> {
                           child: Text(
                                   buttons[index],
                                   style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromARGB(255, 234, 224, 213),
                                   ),
                                 ),
                         )
@@ -173,14 +174,14 @@ class _CalculatorState extends State<Calculator> {
 
    final ButtonStyle circularStyle =
           ElevatedButton.styleFrom(
-            primary: const Color.fromARGB(255, 127, 50, 70),
+            primary: const Color.fromARGB(255, 94, 80, 63),
             fixedSize: const Size(200, 200),
             shape: const CircleBorder(), 
           );
   
   final ButtonStyle normalStyle =
           ElevatedButton.styleFrom(
-            primary: const Color.fromARGB(255, 127, 50, 70),
+            primary: const Color.fromARGB(255, 34, 51, 59),
           );
 }
 
