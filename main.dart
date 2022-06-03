@@ -36,7 +36,7 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   String value1 = '';
   String value2 = '';
-  String operator = '';
+  String operatorType = '';
   String result = '';
   // array of the buttons, an empty String for areas in the grid where no button is needed
   List<String> buttons = [
@@ -79,7 +79,7 @@ class _CalculatorState extends State<Calculator> {
                           color: Color.fromARGB(255, 234, 224, 213),
                         )),
                     const SizedBox(width: 20),
-                    Text(operator,
+                    Text(operatorType,
                         style: const TextStyle(
                           fontSize: 15,
                           color: Color.fromARGB(255, 234, 224, 213),
@@ -141,10 +141,10 @@ class _CalculatorState extends State<Calculator> {
                               if (buttons[index] == '+' ||
                                   buttons[index] == '-') {
                                 if (value1 != '') {
-                                  operator = buttons[index];
+                                  operatorType = buttons[index];
                                 }
                               } else if (buttons[index] != '=' &&
-                                  operator == '') {
+                                  operatorType == '') {
                                 result = "";
                                 // appending values to allow numbers larger than 1 digit
                                 value1 += buttons[index];
@@ -155,7 +155,7 @@ class _CalculatorState extends State<Calculator> {
                               if (buttons[index] == '=' &&
                                   value1 != '' &&
                                   value2 != '') {
-                                if (operator == '+') {
+                                if (operatorType == '+') {
                                   // parse the values to int then add or substract them and convert them back to String
                                   result =
                                       (int.parse(value1) + int.parse(value2))
@@ -167,7 +167,7 @@ class _CalculatorState extends State<Calculator> {
                                 }
                                 // resetting values
                                 value1 = value2 = '';
-                                operator = '';
+                                operatorType = '';
                               }
                             });
                           },
