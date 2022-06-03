@@ -35,6 +35,12 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
+  var value1 = '';
+  var value2 = '';
+  var operator = '';
+  List<String> buttons = ['1', '2', '3', '+', '4', '5', '6', '-', '7', '8', '9'];
+  int? displayValue;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,6 +51,34 @@ class _CalculatorState extends State<Calculator> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                            Text(
+                              value1,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              )
+                            ),
+                            SizedBox(width: 20),
+                            Text(
+                              value2,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              )
+                            ),
+                            SizedBox(width: 20),
+                            Text(
+                              operator,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              )
+                            )
+                        ],
+                      ),
                   Container(
                     color: Colors.black12, 
                     padding: const EdgeInsets.all(25),
@@ -62,75 +96,58 @@ class _CalculatorState extends State<Calculator> {
         ),
         Expanded(
           flex: 3,
-          child: Container(
-            child: _buildButtonGrid
-          ),
-        )
-        ],
-    );
-  }
-}
-
-GridView _buildButtonGrid = GridView.count(
-      primary: false,
-      crossAxisSpacing: 5,
-      mainAxisSpacing: 5,
-      crossAxisCount: 4,
-      children: <Widget>[
-        _buildButtonContainer(Colors.white, "1"),
-        _buildButtonContainer(Colors.white, "2"),
-        _buildButtonContainer(Colors.white, "3"),
-        _buildButtonContainer(Colors.white, "Add the two previous numbers", Icons.add),
-        _buildButtonContainer(Colors.white, "4"),
-        _buildButtonContainer(Colors.white, "5"),
-        _buildButtonContainer(Colors.white, "6"),
-        _buildButtonContainer(Colors.white, "Substract the two previous numbers", Icons.remove),
-        _buildButtonContainer(Colors.white, "7"),
-        _buildButtonContainer(Colors.white, "8"),
-        _buildButtonContainer(Colors.white, "9"),
-        Container(
-          padding: const EdgeInsets.all(12),
-        ),
+          child: 
+            GridView.builder(
+              primary: false,
+              itemCount: buttons.length,
+              gridDelegate: 
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                ),
+              itemBuilder: (BuildContext context, int index) {
+                return ElevatedButton(
+                  style: style,
+                  onPressed: () {
+                    setState(() {
+                      if (buttons[index] == '+' || buttons[index] == '-') {
+                        operator = buttons[index];
+                      } else if (value1 == '') {
+                        value1 = buttons[index];
+                      } else if (value2 == '') {
+                        value2 = buttons[index];
+                      }
+                      else {
+                        value1 = buttons[index];
+                        value2 = '';
+                      }                   
+                    });
+                  },
+                  child: Text(
+                          buttons[index],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                    );
+              }
+            ),
+          )
       ]
     );
-
-Container _buildButtonContainer(Color? textColor, String label, [IconData? icon]) { 
-  final ButtonStyle style =
-        ElevatedButton.styleFrom(
-          primary: const Color.fromARGB(255, 127, 50, 70),
-          fixedSize: const Size(200, 200),
-          shape: const CircleBorder(), 
-        );
-  
-  ElevatedButton calculatorButton;   
-  if (icon != null) {
-    calculatorButton = ElevatedButton(
-          style: style,
-          onPressed: () {},
-          child: Icon(icon,
-            size: 18,
-            color: textColor,
-            semanticLabel: label,
-          ),
-      );   
-  } else {
-    calculatorButton = ElevatedButton(
-          style: style,
-          onPressed: () {},
-          child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: textColor,
-                  ),
-                ),
-      );   
   }
 
-  return Container(
-          padding: const EdgeInsets.all(6),
-          child:
-            calculatorButton,
-  );
+   final ButtonStyle style =
+          ElevatedButton.styleFrom(
+            primary: const Color.fromARGB(255, 127, 50, 70),
+            fixedSize: const Size(200, 200),
+            shape: const CircleBorder(), 
+          );
+
 }
+
+
+
