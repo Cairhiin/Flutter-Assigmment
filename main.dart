@@ -166,8 +166,7 @@ class _CalculatorState extends State<Calculator> {
                                           .toString();
                                 }
                                 // resetting values
-                                value1 = value2 = '';
-                                operatorType = '';
+                                value1 = value2 = operatorType = '';
                               }
                             });
                           },
@@ -188,9 +187,11 @@ class _CalculatorState extends State<Calculator> {
     primary: const Color.fromARGB(255, 94, 80, 63),
     fixedSize: const Size(200, 200),
     shape: const CircleBorder(),
+    elevation: 8,
   );
 
   final ButtonStyle normalStyle = ElevatedButton.styleFrom(
     primary: const Color.fromARGB(255, 34, 51, 59),
+    elevation: 4,
   );
 }
