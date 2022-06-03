@@ -63,6 +63,7 @@ class _CalculatorState extends State<Calculator> {
     return Column(children: [
       Expanded(
         child: Container(
+          constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
           margin: const EdgeInsets.all(15),
           padding: const EdgeInsets.all(15),
           color: const Color.fromARGB(255, 10, 9, 8),
@@ -129,7 +130,7 @@ class _CalculatorState extends State<Calculator> {
                         buttons[index] == '=') {
                       style = normalStyle;
                       extraPadding =
-                          const EdgeInsets.only(top: 20.0, bottom: 20.0);
+                          const EdgeInsets.only(top: 25.0, bottom: 25.0);
                     }
                     return Container(
                         padding: extraPadding,
