@@ -36,8 +36,11 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   String value1 = '';
   String value2 = '';
-  String operatorType = '';
+  String operandType = '';
   String result = '';
+  dynamic style;
+  bool isButtonActive = true;
+  bool isOperand = false;
   // array of the buttons, an empty String for areas in the grid where no button is needed
   List<String> buttons = [
     '1',
@@ -79,7 +82,7 @@ class _CalculatorState extends State<Calculator> {
                           color: Color.fromARGB(255, 234, 224, 213),
                         )),
                     const SizedBox(width: 20),
-                    Text(operatorType,
+                    Text(operandType,
                         style: const TextStyle(
                           fontSize: 15,
                           color: Color.fromARGB(255, 234, 224, 213),
@@ -119,79 +122,91 @@ class _CalculatorState extends State<Calculator> {
                     mainAxisSpacing: 20,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    var style = circularStyle;
-                    EdgeInsets extraPadding =
-                        const EdgeInsets.only(top: 0.0, bottom: 0.0);
+                    isOperand = false;
+                    isButtonActive =
+                        // active only when there's two values and plus or minus operand
+                        (value1 == '' || value2 == '' || operandType == '') &&
+                            buttons[index] == '=';
+                    style = circularStyle;
+
                     if (buttons[index] == '') {
                       return Container();
                     }
+
                     if (buttons[index] == '-' ||
                         buttons[index] == '+' ||
                         buttons[index] == '=') {
                       style = normalStyle;
-                      extraPadding =
-                          const EdgeInsets.only(top: 25.0, bottom: 25.0);
+                      isOperand = true;
                     }
-                    return Container(
-                        padding: extraPadding,
-                        child: ElevatedButton(
-                          style: style,
-                          onPressed: () {
-                            setState(() {
-                              if (buttons[index] == '+' ||
-                                  buttons[index] == '-') {
-                                if (value1 != '') {
-                                  operatorType = buttons[index];
-                                }
-                              } else if (buttons[index] != '=' &&
-                                  operatorType == '') {
-                                result = "";
-                                // appending values to allow numbers larger than 1 digit
-                                value1 += buttons[index];
-                              } else if (buttons[index] != '=') {
-                                value2 += buttons[index];
-                              }
 
-                              if (buttons[index] == '=' &&
-                                  value1 != '' &&
-                                  value2 != '') {
-                                if (operatorType == '+') {
-                                  // parse the values to int then add or substract them and convert them back to String
-                                  result =
-                                      (int.parse(value1) + int.parse(value2))
-                                          .toString();
-                                } else {
-                                  result =
-                                      (int.parse(value1) - int.parse(value2))
-                                          .toString();
-                                }
-                                // resetting values
-                                value1 = value2 = operatorType = '';
-                              }
-                            });
-                          },
-                          child: Text(
-                            buttons[index],
-                            style: const TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w400,
-                              color: Color.fromARGB(255, 234, 224, 213),
-                            ),
-                          ),
-                        ));
+                    return Center(
+                        // Center to stop the button from stretching to full grid height
+                        child: SizedBox(
+                            // adjust width based on button type, so the add/sub/equals button look a bit better
+                            width: isOperand ? 150.0 : 400.0,
+                            child: ElevatedButton(
+                              style: style,
+                              onPressed: isButtonActive
+                                  // set calc button to inactive unless both values are set and adding or substracting is chosen
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        if (buttons[index] == '+' ||
+                                            buttons[index] == '-') {
+                                          if (value1 != '') {
+                                            operandType = buttons[index];
+                                          }
+                                        } else if (buttons[index] != '=' &&
+                                            operandType == '') {
+                                          result = "";
+                                          // appending values to allow numbers larger than 1 digit
+                                          value1 += buttons[index];
+                                        } else if (buttons[index] != '=') {
+                                          value2 += buttons[index];
+                                        }
+
+                                        if (buttons[index] == '=' &&
+                                            value1 != '' &&
+                                            value2 != '') {
+                                          if (operandType == '+') {
+                                            // parse the values to int then add or substract them and convert them back to String
+                                            result = (int.parse(value1) +
+                                                    int.parse(value2))
+                                                .toString();
+                                          } else {
+                                            result = (int.parse(value1) -
+                                                    int.parse(value2))
+                                                .toString();
+                                          }
+                                          // resetting values
+                                          value1 = value2 = operandType = '';
+                                        }
+                                      });
+                                    },
+                              child: Text(
+                                buttons[index],
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromARGB(255, 234, 224, 213),
+                                ),
+                              ),
+                            )));
                   }))),
     ]);
   }
 
   final ButtonStyle circularStyle = ElevatedButton.styleFrom(
     primary: const Color.fromARGB(255, 94, 80, 63),
-    fixedSize: const Size(200, 200),
     shape: const CircleBorder(),
+    minimumSize: const Size(200, 200),
     elevation: 8,
   );
 
   final ButtonStyle normalStyle = ElevatedButton.styleFrom(
     primary: const Color.fromARGB(255, 34, 51, 59),
     elevation: 4,
+    minimumSize: const Size(100, 30),
   );
 }
