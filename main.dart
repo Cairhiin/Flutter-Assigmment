@@ -41,6 +41,7 @@ class _CalculatorState extends State<Calculator> {
   dynamic style;
   bool isButtonActive = true;
   bool isOperand = false;
+
   // array of the buttons, an empty String for areas in the grid where no button is needed
   List<String> buttons = [
     '1',
@@ -67,13 +68,14 @@ class _CalculatorState extends State<Calculator> {
       Expanded(
         child: Container(
           constraints: const BoxConstraints(minWidth: 400, maxWidth: 500),
-          margin: const EdgeInsets.all(15),
-          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           color: const Color.fromARGB(255, 10, 9, 8),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
+                Expanded(
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(value1,
@@ -94,7 +96,7 @@ class _CalculatorState extends State<Calculator> {
                           color: Color.fromARGB(255, 234, 224, 213),
                         ))
                   ],
-                ),
+                )),
                 Container(
                   padding: const EdgeInsets.all(25),
                   alignment: Alignment.centerRight,
@@ -122,32 +124,33 @@ class _CalculatorState extends State<Calculator> {
                     mainAxisSpacing: 20,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    isOperand = false;
+                    isOperand = (buttons[index] == '-' ||
+                        buttons[index] == '+' ||
+                        buttons[index] == '=');
+                    isOperand == true
+                        ? style = normalStyle
+                        : style = circularStyle;
                     isButtonActive =
+
                         // active only when there's two values and plus or minus operand
                         (value1 == '' || value2 == '' || operandType == '') &&
                             buttons[index] == '=';
-                    style = circularStyle;
 
+                    // return empty container for empty grid areas
                     if (buttons[index] == '') {
                       return Container();
                     }
 
-                    if (buttons[index] == '-' ||
-                        buttons[index] == '+' ||
-                        buttons[index] == '=') {
-                      style = normalStyle;
-                      isOperand = true;
-                    }
-
+                    // Center to stop the button from stretching to full grid height
                     return Center(
-                        // Center to stop the button from stretching to full grid height
                         child: SizedBox(
+
                             // adjust width based on button type, so the add/sub/equals button look a bit better
                             width: isOperand ? 150.0 : 400.0,
                             child: ElevatedButton(
                               style: style,
                               onPressed: isButtonActive
+
                                   // set calc button to inactive unless both values are set and adding or substracting is chosen
                                   ? null
                                   : () {
@@ -160,6 +163,7 @@ class _CalculatorState extends State<Calculator> {
                                         } else if (buttons[index] != '=' &&
                                             operandType == '') {
                                           result = "";
+
                                           // appending values to allow numbers larger than 1 digit
                                           value1 += buttons[index];
                                         } else if (buttons[index] != '=') {
@@ -179,6 +183,7 @@ class _CalculatorState extends State<Calculator> {
                                                     int.parse(value2))
                                                 .toString();
                                           }
+
                                           // resetting values
                                           value1 = value2 = operandType = '';
                                         }
