@@ -45,7 +45,7 @@ class _CalculatorState extends State<Calculator> {
   String operandType = '';
   String result = '';
   dynamic style;
-  bool isButtonActive = true;
+  bool isButtonInactive = true;
   bool isOperand = false;
 
   // array of the buttons, an empty String for areas in the grid where no button is needed
@@ -147,7 +147,7 @@ class _CalculatorState extends State<Calculator> {
                     isOperand == true
                         ? style = normalStyle
                         : style = circularStyle;
-                    isButtonActive =
+                    isButtonInactive =
 
                         // active only when there's two values and plus or minus operand
                         (value1 == '' || value2 == '' || operandType == '') &&
@@ -166,7 +166,7 @@ class _CalculatorState extends State<Calculator> {
                             width: isOperand ? 150.0 : 400.0,
                             child: ElevatedButton(
                               style: style,
-                              onPressed: isButtonActive
+                              onPressed: isButtonInactive
 
                                   // set calc button to inactive unless both values are set and adding or substracting is chosen
                                   ? null
